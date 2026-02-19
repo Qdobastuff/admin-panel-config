@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benedict District - Admin Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .header h1 {
+            color: #1e3c72;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .section h2 {
+            color: #1e3c72;
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #2a5298;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: #2a5298;
+        }
+        
+        textarea {
+            font-family: 'Courier New', monospace;
+            min-height: 200px;
+        }
+        
+        button {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 60, 114, 0.4);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .success {
+            background: #10b981;
+            color: white;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+            display: none;
+        }
+        
+        .success.show {
+            display: block;
+        }
+        
+        .error {
+            background: #ef4444;
+            color: white;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+            display: none;
+        }
+        
+        .error.show {
+            display: block;
+        }
+        
+        .budget-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        
+        .budget-item {
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .budget-item label {
+            font-size: 16px;
+            color: #1e3c72;
+        }
+        
+        .budget-item input {
+            margin-top: 8px;
+        }
+        
+        .instructions {
+            background: #f0f9ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2a5298;
+        }
+        
+        .instructions h3 {
+            color: #1e3c72;
+            margin-bottom: 12px;
+        }
+        
+        .instructions p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        
+        .instructions code {
+            background: #e0f2fe;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #0369a1;
+        }
+        
+        .preview {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 Benedict District Admin Panel</h1>
+            <p>Configure last year's sales data and labor budgets</p>
+        </div>
+        
+        <!-- Labor Budgets Section -->
+        <div class="section">
+            <h2>💼 Labor Budget Setup</h2>
+            <div class="instructions">
+                <h3>Set Target Labor Percentages</h3>
+                <p>Enter the labor budget percentage for each store (as a decimal). Example: <code>0.25</code> for 25%</p>
+            </div>
+            
+            <div class="budget-grid">
+                <div class="budget-item">
+                    <label for="richmond_budget">Richmond</label>
+                    <input type="number" id="richmond_budget" step="0.01" min="0" max="1" value="0.25" placeholder="0.25">
+                </div>
+                <div class="budget-item">
+                    <label for="palomar_budget">Palomar</label>
+                    <input type="number" id="palomar_budget" step="0.01" min="0" max="1" value="0.25" placeholder="0.25">
+                </div>
+                <div class="budget-item">
+                    <label for="georgetown_budget">Georgetown</label>
+                    <input type="number" id="georgetown_budget" step="0.01" min="0" max="1" value="0.25" placeholder="0.25">
+                </div>
+                <div class="budget-item">
+                    <label for="danville_budget">Danville</label>
+                    <input type="number" id="danville_budget" step="0.01" min="0" max="1" value="0.25" placeholder="0.25">
+                </div>
+            </div>
+            
+            <button onclick="saveBudgets()" style="margin-top: 20px;">💾 Save Labor Budgets</button>
+            <div class="success" id="budgetSuccess">✓ Labor budgets saved successfully!</div>
+            <div class="error" id="budgetError"></div>
+        </div>
+        
+        <!-- Last Year Sales - CSV Upload -->
+        <div class="section">
+            <h2>📊 Last Year Sales Data - CSV Upload</h2>
+            <div class="instructions">
+                <h3>Upload CSV Format</h3>
+                <p>Create a CSV file with these columns: <code>date,richmond,palomar,georgetown,danville</code></p>
+                <p>Date format: <code>YYYY-MM-DD</code> (e.g., 2025-02-07)</p>
+                <p>Sales should be numbers without $ or commas (e.g., 3000 not $3,000)</p>
+                <p><strong>Example:</strong></p>
+                <div class="preview">date,richmond,palomar,georgetown,danville
+2025-02-07,3000,2800,3200,2900
+2025-02-08,3100,2900,3300,3000</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="csvFile">Upload CSV File</label>
+                <input type="file" id="csvFile" accept=".csv" onchange="previewCSV()">
+            </div>
+            
+            <div id="csvPreview"></div>
+            
+            <button onclick="uploadCSV()" id="csvUploadBtn" disabled>📤 Upload Sales Data</button>
+            <div class="success" id="csvSuccess"></div>
+            <div class="error" id="csvError"></div>
+        </div>
+        
+        <!-- Last Year Sales - Manual Entry -->
+        <div class="section">
+            <h2>📝 Last Year Sales Data - Manual Entry</h2>
+            <div class="instructions">
+                <h3>Single Day Entry</h3>
+                <p>Enter sales for one specific day. Useful for adding individual dates or corrections.</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="manualDate">Date</label>
+                <input type="date" id="manualDate" required>
+            </div>
+            
+            <div class="budget-grid">
+                <div class="budget-item">
+                    <label for="richmond_sales">Richmond Sales ($)</label>
+                    <input type="number" id="richmond_sales" step="0.01" min="0" placeholder="3000">
+                </div>
+                <div class="budget-item">
+                    <label for="palomar_sales">Palomar Sales ($)</label>
+                    <input type="number" id="palomar_sales" step="0.01" min="0" placeholder="2800">
+                </div>
+                <div class="budget-item">
+                    <label for="georgetown_sales">Georgetown Sales ($)</label>
+                    <input type="number" id="georgetown_sales" step="0.01" min="0" placeholder="3200">
+                </div>
+                <div class="budget-item">
+                    <label for="danville_sales">Danville Sales ($)</label>
+                    <input type="number" id="danville_sales" step="0.01" min="0" placeholder="2900">
+                </div>
+            </div>
+            
+            <button onclick="saveManualEntry()" style="margin-top: 20px;">💾 Save Manual Entry</button>
+            <div class="success" id="manualSuccess">✓ Sales data saved successfully!</div>
+            <div class="error" id="manualError"></div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.7.1/firebase-app-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.7.1/firebase-firestore-compat.min.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCg6sdwxr788HymNLHF3skIro7P6SWrvHE",
+            authDomain: "labor-tracker-bbbaa.firebaseapp.com",
+            projectId: "labor-tracker-bbbaa",
+            storageBucket: "labor-tracker-bbbaa.firebasestorage.app",
+            messagingSenderId: "939951401620",
+            appId: "1:939951401620:web:f2cd20c38c8e36a5466281"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        const stores = ['Richmond', 'Palomar', 'Georgetown', 'Danville'];
+        
+        // Save Labor Budgets
+        async function saveBudgets() {
+            const budgetSuccess = document.getElementById('budgetSuccess');
+            const budgetError = document.getElementById('budgetError');
+            budgetSuccess.classList.remove('show');
+            budgetError.classList.remove('show');
+            
+            try {
+                const budgets = {
+                    'Richmond': parseFloat(document.getElementById('richmond_budget').value),
+                    'Palomar': parseFloat(document.getElementById('palomar_budget').value),
+                    'Georgetown': parseFloat(document.getElementById('georgetown_budget').value),
+                    'Danville': parseFloat(document.getElementById('danville_budget').value)
+                };
+                
+                for (const [store, budget] of Object.entries(budgets)) {
+                    // Check if budget already exists
+                    const existing = await db.collection('labor_budgets')
+                        .where('store', '==', store)
+                        .get();
+                    
+                    if (existing.empty) {
+                        // Create new
+                        await db.collection('labor_budgets').add({
+                            store: store,
+                            budget_percentage: budget
+                        });
+                    } else {
+                        // Update existing
+                        const docId = existing.docs[0].id;
+                        await db.collection('labor_budgets').doc(docId).update({
+                            budget_percentage: budget
+                        });
+                    }
+                }
+                
+                budgetSuccess.classList.add('show');
+                setTimeout(() => budgetSuccess.classList.remove('show'), 3000);
+            } catch (error) {
+                budgetError.textContent = `Error: ${error.message}`;
+                budgetError.classList.add('show');
+            }
+        }
+        
+        // Preview CSV
+        let csvData = [];
+        function previewCSV() {
+            const file = document.getElementById('csvFile').files[0];
+            const preview = document.getElementById('csvPreview');
+            const uploadBtn = document.getElementById('csvUploadBtn');
+            
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                const lines = text.trim().split('\n');
+                
+                // Parse CSV
+                csvData = [];
+                for (let i = 1; i < lines.length; i++) { // Skip header
+                    const cols = lines[i].split(',');
+                    if (cols.length >= 5) {
+                        csvData.push({
+                            date: cols[0].trim(),
+                            richmond: parseFloat(cols[1]),
+                            palomar: parseFloat(cols[2]),
+                            georgetown: parseFloat(cols[3]),
+                            danville: parseFloat(cols[4])
+                        });
+                    }
+                }
+                
+                preview.innerHTML = `
+                    <div class="instructions">
+                        <h3>Preview (${csvData.length} rows)</h3>
+                        <div class="preview">${csvData.slice(0, 5).map(row => 
+                            `${row.date}: Richmond=$${row.richmond}, Palomar=$${row.palomar}, Georgetown=$${row.georgetown}, Danville=$${row.danville}`
+                        ).join('\n')}${csvData.length > 5 ? '\n...' : ''}</div>
+                    </div>
+                `;
+                
+                uploadBtn.disabled = false;
+            };
+            reader.readAsText(file);
+        }
+        
+        // Upload CSV
+        async function uploadCSV() {
+            const csvSuccess = document.getElementById('csvSuccess');
+            const csvError = document.getElementById('csvError');
+            const uploadBtn = document.getElementById('csvUploadBtn');
+            
+            csvSuccess.classList.remove('show');
+            csvError.classList.remove('show');
+            uploadBtn.disabled = true;
+            uploadBtn.textContent = 'Uploading...';
+            
+            try {
+                let uploaded = 0;
+                for (const row of csvData) {
+                    for (const store of stores) {
+                        const storeLower = store.toLowerCase();
+                        
+                        // Check if entry exists
+                        const existing = await db.collection('last_year_sales')
+                            .where('store', '==', store)
+                            .where('date', '==', row.date)
+                            .get();
+                        
+                        if (existing.empty) {
+                            await db.collection('last_year_sales').add({
+                                store: store,
+                                date: row.date,
+                                sales: row[storeLower]
+                            });
+                        } else {
+                            const docId = existing.docs[0].id;
+                            await db.collection('last_year_sales').doc(docId).update({
+                                sales: row[storeLower]
+                            });
+                        }
+                    }
+                    uploaded++;
+                    uploadBtn.textContent = `Uploading... ${uploaded}/${csvData.length}`;
+                }
+                
+                csvSuccess.textContent = `✓ Successfully uploaded ${csvData.length} days of sales data!`;
+                csvSuccess.classList.add('show');
+                uploadBtn.textContent = '📤 Upload Sales Data';
+                uploadBtn.disabled = false;
+                
+                setTimeout(() => csvSuccess.classList.remove('show'), 5000);
+            } catch (error) {
+                csvError.textContent = `Error: ${error.message}`;
+                csvError.classList.add('show');
+                uploadBtn.textContent = '📤 Upload Sales Data';
+                uploadBtn.disabled = false;
+            }
+        }
+        
+        // Save Manual Entry
+        async function saveManualEntry() {
+            const manualSuccess = document.getElementById('manualSuccess');
+            const manualError = document.getElementById('manualError');
+            manualSuccess.classList.remove('show');
+            manualError.classList.remove('show');
+            
+            const date = document.getElementById('manualDate').value;
+            if (!date) {
+                manualError.textContent = 'Please select a date';
+                manualError.classList.add('show');
+                return;
+            }
+            
+            try {
+                const salesData = {
+                    'Richmond': parseFloat(document.getElementById('richmond_sales').value) || 0,
+                    'Palomar': parseFloat(document.getElementById('palomar_sales').value) || 0,
+                    'Georgetown': parseFloat(document.getElementById('georgetown_sales').value) || 0,
+                    'Danville': parseFloat(document.getElementById('danville_sales').value) || 0
+                };
+                
+                for (const [store, sales] of Object.entries(salesData)) {
+                    const existing = await db.collection('last_year_sales')
+                        .where('store', '==', store)
+                        .where('date', '==', date)
+                        .get();
+                    
+                    if (existing.empty) {
+                        await db.collection('last_year_sales').add({
+                            store: store,
+                            date: date,
+                            sales: sales
+                        });
+                    } else {
+                        const docId = existing.docs[0].id;
+                        await db.collection('last_year_sales').doc(docId).update({
+                            sales: sales
+                        });
+                    }
+                }
+                
+                manualSuccess.classList.add('show');
+                setTimeout(() => manualSuccess.classList.remove('show'), 3000);
+                
+                // Clear form
+                document.getElementById('richmond_sales').value = '';
+                document.getElementById('palomar_sales').value = '';
+                document.getElementById('georgetown_sales').value = '';
+                document.getElementById('danville_sales').value = '';
+            } catch (error) {
+                manualError.textContent = `Error: ${error.message}`;
+                manualError.classList.add('show');
+            }
+        }
+    </script>
+</body>
+</html>
