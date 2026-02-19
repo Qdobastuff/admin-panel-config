@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Benedict District - Admin Panel</title>
+    <title>All Stores - Admin Panel</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,7 @@
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
         
@@ -58,35 +58,31 @@
             border-bottom: 3px solid #2a5298;
         }
         
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
-            font-size: 14px;
-        }
-        
-        select, input, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
+        .instructions {
+            background: #f0f9ff;
+            padding: 20px;
             border-radius: 8px;
-            font-size: 14px;
-            font-family: inherit;
+            margin-bottom: 20px;
+            border-left: 4px solid #2a5298;
         }
         
-        select:focus, input:focus, textarea:focus {
-            outline: none;
-            border-color: #2a5298;
+        .instructions h3 {
+            color: #1e3c72;
+            margin-bottom: 12px;
         }
         
-        textarea {
+        .instructions p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        
+        .instructions code {
+            background: #e0f2fe;
+            padding: 2px 6px;
+            border-radius: 4px;
             font-family: 'Courier New', monospace;
-            min-height: 200px;
+            color: #0369a1;
         }
         
         button {
@@ -138,54 +134,13 @@
             display: block;
         }
         
-        .budget-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
-        }
-        
-        .budget-item {
-            padding: 16px;
-            background: #f9fafb;
-            border-radius: 8px;
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
             border: 2px solid #e0e0e0;
-        }
-        
-        .budget-item label {
-            font-size: 16px;
-            color: #1e3c72;
-        }
-        
-        .budget-item input {
-            margin-top: 8px;
-        }
-        
-        .instructions {
-            background: #f0f9ff;
-            padding: 20px;
             border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 4px solid #2a5298;
-        }
-        
-        .instructions h3 {
-            color: #1e3c72;
-            margin-bottom: 12px;
-        }
-        
-        .instructions p {
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 8px;
-        }
-        
-        .instructions code {
-            background: #e0f2fe;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            color: #0369a1;
+            font-size: 14px;
+            font-family: inherit;
         }
         
         .preview {
@@ -198,151 +153,81 @@
             max-height: 200px;
             overflow-y: auto;
         }
+
+        .progress {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            margin: 16px 0;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            width: 0%;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🔧 Benedict District Admin Panel</h1>
-            <p>Configure last year's sales data and labor budgets</p>
+            <h1>🔧 All Stores Admin Panel</h1>
+            <p>Upload last year's sales data for all 28 stores</p>
         </div>
         
-        <!-- Labor Budgets Section -->
+        <!-- CSV Upload Section -->
         <div class="section">
-            <h2>💼 Labor Budget Setup</h2>
+            <h2>📊 Upload Complete Year Sales Data</h2>
             <div class="instructions">
-                <h3>Set Target Labor Percentages</h3>
-                <p>Enter the labor budget percentage for each store (as a decimal). Example: <code>0.25</code> for 25%</p>
+                <h3>Upload CSV with All Stores</h3>
+                <p>Upload the <code>complete_year_all_stores.csv</code> file</p>
+                <p>Format: <code>date,store_code,sales</code></p>
+                <p>This will upload data for all 28 stores at once</p>
             </div>
             
-            <div class="budget-grid">
-                <div class="budget-item">
-                    <label for="richmond_budget">Richmond</label>
-                    <input type="number" id="richmond_budget" step="0.01" min="0" max="1" value="0.25" placeholder="0.25">
-                </div>
-                <div class="budget-item">
-                    <label for="palomar_budget">Palomar</label>
-                    <input type="number" id="palomar_budget" step="0.01" min="0" max="1" value="0.25" placeholder="0.25">
-                </div>
-                <div class="budget-item">
-                    <label for="georgetown_budget">Georgetown</label>
-                    <input type="number" id="georgetown_budget" step="0.01" min="0" max="1" value="0.25" placeholder="0.25">
-                </div>
-                <div class="budget-item">
-                    <label for="danville_budget">Danville</label>
-                    <input type="number" id="danville_budget" step="0.01" min="0" max="1" value="0.25" placeholder="0.25">
-                </div>
-            </div>
-            
-            <button onclick="saveBudgets()" style="margin-top: 20px;">💾 Save Labor Budgets</button>
-            <div class="success" id="budgetSuccess">✓ Labor budgets saved successfully!</div>
-            <div class="error" id="budgetError"></div>
-        </div>
-        
-        <!-- Store Hours Section -->
-        <div class="section">
-            <h2>🕒 Store Closing Times</h2>
-            <div class="instructions">
-                <h3>Set Closing Times</h3>
-                <p>Enter closing time in 24-hour format. Example: <code>22</code> for 10pm</p>
-            </div>
-            
-            <div class="budget-grid">
-                <div class="budget-item">
-                    <label for="richmond_hours">Richmond Closes At</label>
-                    <input type="number" id="richmond_hours" min="0" max="23" value="22" placeholder="22">
-                    <small style="color: #666; margin-top: 4px; display: block;">Hour (0-23)</small>
-                </div>
-                <div class="budget-item">
-                    <label for="palomar_hours">Palomar Closes At</label>
-                    <input type="number" id="palomar_hours" min="0" max="23" value="22" placeholder="22">
-                    <small style="color: #666; margin-top: 4px; display: block;">Hour (0-23)</small>
-                </div>
-                <div class="budget-item">
-                    <label for="georgetown_hours">Georgetown Closes At</label>
-                    <input type="number" id="georgetown_hours" min="0" max="23" value="22" placeholder="22">
-                    <small style="color: #666; margin-top: 4px; display: block;">Hour (0-23)</small>
-                </div>
-                <div class="budget-item">
-                    <label for="danville_hours">Danville Closes At</label>
-                    <input type="number" id="danville_hours" min="0" max="23" value="22" placeholder="22">
-                    <small style="color: #666; margin-top: 4px; display: block;">Hour (0-23)</small>
-                </div>
-            </div>
-            
-            <button onclick="saveStoreHours()" style="margin-top: 20px;">💾 Save Store Hours</button>
-            <div class="success" id="hoursSuccess">✓ Store hours saved successfully!</div>
-            <div class="error" id="hoursError"></div>
-        </div>
-        
-        <!-- Last Year Sales - CSV Upload -->
-        <div class="section">
-            <h2>📊 Last Year Sales Data - CSV Upload</h2>
-            <div class="instructions">
-                <h3>Upload CSV Format</h3>
-                <p>Create a CSV file with these columns: <code>date,richmond,palomar,georgetown,danville</code></p>
-                <p>Date format: <code>YYYY-MM-DD</code> (e.g., 2025-02-07)</p>
-                <p>Sales should be numbers without $ or commas (e.g., 3000 not $3,000)</p>
-                <p><strong>Example:</strong></p>
-                <div class="preview">date,richmond,palomar,georgetown,danville
-2025-02-07,3000,2800,3200,2900
-2025-02-08,3100,2900,3300,3000</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="csvFile">Upload CSV File</label>
-                <input type="file" id="csvFile" accept=".csv" onchange="previewCSV()">
-            </div>
+            <input type="file" id="csvFile" accept=".csv" onchange="previewCSV()">
             
             <div id="csvPreview"></div>
             
-            <button onclick="uploadCSV()" id="csvUploadBtn" disabled>📤 Upload Sales Data</button>
+            <div class="progress" id="uploadProgress">
+                <div class="progress-bar" id="progressBar">0%</div>
+            </div>
+            
+            <button onclick="uploadCSV()" id="csvUploadBtn" disabled style="margin-top: 16px;">📤 Upload All Sales Data</button>
             <div class="success" id="csvSuccess"></div>
             <div class="error" id="csvError"></div>
         </div>
         
-        <!-- Last Year Sales - Manual Entry -->
+        <!-- Store Settings Section -->
         <div class="section">
-            <h2>📝 Last Year Sales Data - Manual Entry</h2>
+            <h2>⚙️ Individual Store Settings</h2>
             <div class="instructions">
-                <h3>Single Day Entry</h3>
-                <p>Enter sales for one specific day. Useful for adding individual dates or corrections.</p>
+                <h3>Configure Each Store</h3>
+                <p>Set labor budget % and closing hour for each store individually</p>
             </div>
             
-            <div class="form-group">
-                <label for="manualDate">Date</label>
-                <input type="date" id="manualDate" required>
+            <div id="storeSettingsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-top: 20px;">
+                <!-- Stores will be added here by JavaScript -->
             </div>
             
-            <div class="budget-grid">
-                <div class="budget-item">
-                    <label for="richmond_sales">Richmond Sales ($)</label>
-                    <input type="number" id="richmond_sales" step="0.01" min="0" placeholder="3000">
-                </div>
-                <div class="budget-item">
-                    <label for="palomar_sales">Palomar Sales ($)</label>
-                    <input type="number" id="palomar_sales" step="0.01" min="0" placeholder="2800">
-                </div>
-                <div class="budget-item">
-                    <label for="georgetown_sales">Georgetown Sales ($)</label>
-                    <input type="number" id="georgetown_sales" step="0.01" min="0" placeholder="3200">
-                </div>
-                <div class="budget-item">
-                    <label for="danville_sales">Danville Sales ($)</label>
-                    <input type="number" id="danville_sales" step="0.01" min="0" placeholder="2900">
-                </div>
-            </div>
-            
-            <button onclick="saveManualEntry()" style="margin-top: 20px;">💾 Save Manual Entry</button>
-            <div class="success" id="manualSuccess">✓ Sales data saved successfully!</div>
-            <div class="error" id="manualError"></div>
+            <button onclick="saveAllStoreSettings()" style="margin-top: 20px;">💾 Save All Store Settings</button>
+            <div class="success" id="storeSuccess">✓ All store settings saved!</div>
+            <div class="error" id="storeError"></div>
         </div>
     </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.7.1/firebase-app-compat.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.7.1/firebase-firestore-compat.min.js"></script>
     <script>
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCg6sdwxr788HymNLHF3skIro7P6SWrvHE",
             authDomain: "labor-tracker-bbbaa.firebaseapp.com",
@@ -355,95 +240,160 @@
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         
-        const stores = ['Richmond', 'Palomar', 'Georgetown', 'Danville'];
+        const storeNames = {
+            '2166': 'Carson',
+            '2493': 'Westport Village', 
+            '2029': 'Schuster',
+            '2632': 'S 4th Street',
+            '2713': 'U OF L',
+            '2753': 'Blankenbaker',
+            '2888': 'Elizabethtown',
+            '2937': 'Jefferson Commons',
+            '2098': 'Summit',
+            '2131': 'Charlestown',
+            '2431': 'Poplar Level',
+            '2641': 'Dixie Hwy',
+            '2731': 'Veterans',
+            '2880': 'Wesley Commons',
+            '3044': 'Jeffersonville IN',
+            '2274': 'Hurstborne',
+            '2546': 'Preston',
+            '2811': 'Middletown',
+            '2837': 'Harley Center',
+            '2086': 'Euclid',
+            '2114': 'Frankfort',
+            '2294': 'Sir Barton',
+            '2521': 'Tiverton',
+            '2444': 'Richmond',
+            '2524': 'Palomar',
+            '2842': 'Georgetown',
+            '3286': 'Danville'
+        };
         
-        // Save Labor Budgets
-        async function saveBudgets() {
-            const budgetSuccess = document.getElementById('budgetSuccess');
-            const budgetError = document.getElementById('budgetError');
-            budgetSuccess.classList.remove('show');
-            budgetError.classList.remove('show');
+        const allStores = Object.keys(storeNames);
+        
+        // Create individual store setting cards
+        function initializeStoreSettings() {
+            const grid = document.getElementById('storeSettingsGrid');
             
-            try {
-                const budgets = {
-                    'Richmond': parseFloat(document.getElementById('richmond_budget').value),
-                    'Palomar': parseFloat(document.getElementById('palomar_budget').value),
-                    'Georgetown': parseFloat(document.getElementById('georgetown_budget').value),
-                    'Danville': parseFloat(document.getElementById('danville_budget').value)
-                };
+            allStores.forEach(code => {
+                const card = document.createElement('div');
+                card.style.padding = '16px';
+                card.style.background = '#f9fafb';
+                card.style.borderRadius = '8px';
+                card.style.border = '2px solid #e0e0e0';
                 
-                for (const [store, budget] of Object.entries(budgets)) {
-                    // Check if budget already exists
-                    const existing = await db.collection('labor_budgets')
-                        .where('store', '==', store)
+                card.innerHTML = `
+                    <div style="font-weight: 700; color: #1e3c72; margin-bottom: 12px; font-size: 16px;">
+                        ${storeNames[code]}
+                        <span style="color: #666; font-size: 12px; font-weight: 400;">(${code})</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 12px; color: #666; margin-bottom: 4px;">Labor Budget %</label>
+                        <input type="number" id="budget_${code}" step="0.01" min="0" max="1" value="0.25" 
+                               style="width: 100%; padding: 8px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 14px;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 12px; color: #666; margin-bottom: 4px;">Closing Hour (0-23)</label>
+                        <input type="number" id="closing_${code}" min="0" max="23" value="22" 
+                               style="width: 100%; padding: 8px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 14px;">
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+        
+        // Load existing settings from Firebase
+        async function loadExistingSettings() {
+            try {
+                for (const code of allStores) {
+                    // Load budget
+                    const budgetQuery = await db.collection('labor_budgets')
+                        .where('store_code', '==', code)
                         .get();
                     
-                    if (existing.empty) {
-                        // Create new
+                    if (!budgetQuery.empty) {
+                        const budget = budgetQuery.docs[0].data().budget_percentage;
+                        document.getElementById(`budget_${code}`).value = budget;
+                    }
+                    
+                    // Load closing hour
+                    const settingsQuery = await db.collection('store_settings')
+                        .where('store_code', '==', code)
+                        .get();
+                    
+                    if (!settingsQuery.empty) {
+                        const closingHour = settingsQuery.docs[0].data().closing_hour;
+                        document.getElementById(`closing_${code}`).value = closingHour;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading settings:', error);
+            }
+        }
+        
+        // Save all store settings
+        async function saveAllStoreSettings() {
+            const storeSuccess = document.getElementById('storeSuccess');
+            const storeError = document.getElementById('storeError');
+            storeSuccess.classList.remove('show');
+            storeError.classList.remove('show');
+            
+            try {
+                for (const code of allStores) {
+                    const budget = parseFloat(document.getElementById(`budget_${code}`).value);
+                    const closingHour = parseInt(document.getElementById(`closing_${code}`).value);
+                    
+                    // Save labor budget
+                    const budgetQuery = await db.collection('labor_budgets')
+                        .where('store_code', '==', code)
+                        .get();
+                    
+                    if (budgetQuery.empty) {
                         await db.collection('labor_budgets').add({
-                            store: store,
+                            store_code: code,
                             budget_percentage: budget
                         });
                     } else {
-                        // Update existing
-                        const docId = existing.docs[0].id;
-                        await db.collection('labor_budgets').doc(docId).update({
+                        await db.collection('labor_budgets').doc(budgetQuery.docs[0].id).update({
                             budget_percentage: budget
                         });
                     }
-                }
-                
-                budgetSuccess.classList.add('show');
-                setTimeout(() => budgetSuccess.classList.remove('show'), 3000);
-            } catch (error) {
-                budgetError.textContent = `Error: ${error.message}`;
-                budgetError.classList.add('show');
-            }
-        }
-        
-        // Save Store Hours
-        async function saveStoreHours() {
-            const hoursSuccess = document.getElementById('hoursSuccess');
-            const hoursError = document.getElementById('hoursError');
-            hoursSuccess.classList.remove('show');
-            hoursError.classList.remove('show');
-            
-            try {
-                const hours = {
-                    'Richmond': parseInt(document.getElementById('richmond_hours').value),
-                    'Palomar': parseInt(document.getElementById('palomar_hours').value),
-                    'Georgetown': parseInt(document.getElementById('georgetown_hours').value),
-                    'Danville': parseInt(document.getElementById('danville_hours').value)
-                };
-                
-                for (const [store, closingHour] of Object.entries(hours)) {
-                    const existing = await db.collection('store_settings')
-                        .where('store', '==', store)
+                    
+                    // Save closing hour
+                    const settingsQuery = await db.collection('store_settings')
+                        .where('store_code', '==', code)
                         .get();
                     
-                    if (existing.empty) {
+                    if (settingsQuery.empty) {
                         await db.collection('store_settings').add({
-                            store: store,
+                            store_code: code,
                             closing_hour: closingHour
                         });
                     } else {
-                        const docId = existing.docs[0].id;
-                        await db.collection('store_settings').doc(docId).update({
+                        await db.collection('store_settings').doc(settingsQuery.docs[0].id).update({
                             closing_hour: closingHour
                         });
                     }
                 }
                 
-                hoursSuccess.classList.add('show');
-                setTimeout(() => hoursSuccess.classList.remove('show'), 3000);
+                storeSuccess.classList.add('show');
+                setTimeout(() => storeSuccess.classList.remove('show'), 3000);
             } catch (error) {
-                hoursError.textContent = `Error: ${error.message}`;
-                hoursError.classList.add('show');
+                storeError.textContent = `Error: ${error.message}`;
+                storeError.classList.add('show');
             }
         }
         
-        // Preview CSV
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            initializeStoreSettings();
+            loadExistingSettings();
+        });
+        
         let csvData = [];
+        
         function previewCSV() {
             const file = document.getElementById('csvFile').files[0];
             const preview = document.getElementById('csvPreview');
@@ -456,26 +406,41 @@
                 const text = e.target.result;
                 const lines = text.trim().split('\n');
                 
-                // Parse CSV
                 csvData = [];
-                for (let i = 1; i < lines.length; i++) { // Skip header
+                for (let i = 1; i < lines.length; i++) {
                     const cols = lines[i].split(',');
-                    if (cols.length >= 5) {
+                    if (cols.length >= 3) {
                         csvData.push({
                             date: cols[0].trim(),
-                            richmond: parseFloat(cols[1]),
-                            palomar: parseFloat(cols[2]),
-                            georgetown: parseFloat(cols[3]),
-                            danville: parseFloat(cols[4])
+                            store_code: cols[1].trim(),
+                            sales: parseFloat(cols[2].trim())
                         });
                     }
                 }
                 
+                // Count unique dates and stores
+                const uniqueDates = new Set(csvData.map(r => r.date)).size;
+                const uniqueStores = new Set(csvData.map(r => r.store_code)).size;
+                
                 preview.innerHTML = `
                     <div class="instructions">
-                        <h3>Preview (${csvData.length} rows)</h3>
-                        <div class="preview">${csvData.slice(0, 5).map(row => 
-                            `${row.date}: Richmond=$${row.richmond}, Palomar=$${row.palomar}, Georgetown=$${row.georgetown}, Danville=$${row.danville}`
+                        <h3>✓ CSV Loaded Successfully</h3>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 12px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 32px; font-weight: 700; color: #1e3c72;">${csvData.length.toLocaleString()}</div>
+                                <div style="color: #666; font-size: 12px;">Total Records</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 32px; font-weight: 700; color: #1e3c72;">${uniqueStores}</div>
+                                <div style="color: #666; font-size: 12px;">Stores</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 32px; font-weight: 700; color: #1e3c72;">${uniqueDates}</div>
+                                <div style="color: #666; font-size: 12px;">Days</div>
+                            </div>
+                        </div>
+                        <div class="preview" style="margin-top: 16px;">${csvData.slice(0, 5).map(row => 
+                            `${row.date} - Store ${row.store_code}: $${row.sales.toLocaleString()}`
                         ).join('\n')}${csvData.length > 5 ? '\n...' : ''}</div>
                     </div>
                 `;
@@ -485,113 +450,118 @@
             reader.readAsText(file);
         }
         
-        // Upload CSV
         async function uploadCSV() {
             const csvSuccess = document.getElementById('csvSuccess');
             const csvError = document.getElementById('csvError');
             const uploadBtn = document.getElementById('csvUploadBtn');
+            const progress = document.getElementById('uploadProgress');
+            const progressBar = document.getElementById('progressBar');
             
             csvSuccess.classList.remove('show');
             csvError.classList.remove('show');
             uploadBtn.disabled = true;
-            uploadBtn.textContent = 'Uploading...';
+            progress.style.display = 'block';
             
             try {
+                const batchSize = 100;
                 let uploaded = 0;
-                for (const row of csvData) {
-                    for (const store of stores) {
-                        const storeLower = store.toLowerCase();
-                        
+                
+                for (let i = 0; i < csvData.length; i += batchSize) {
+                    const batch = db.batch();
+                    const chunk = csvData.slice(i, i + batchSize);
+                    
+                    for (const row of chunk) {
                         // Check if entry exists
                         const existing = await db.collection('last_year_sales')
-                            .where('store', '==', store)
+                            .where('store_code', '==', row.store_code)
                             .where('date', '==', row.date)
                             .get();
                         
                         if (existing.empty) {
-                            await db.collection('last_year_sales').add({
-                                store: store,
-                                date: row.date,
-                                sales: row[storeLower]
-                            });
+                            const docRef = db.collection('last_year_sales').doc();
+                            batch.set(docRef, row);
                         } else {
                             const docId = existing.docs[0].id;
-                            await db.collection('last_year_sales').doc(docId).update({
-                                sales: row[storeLower]
-                            });
+                            batch.update(db.collection('last_year_sales').doc(docId), {sales: row.sales});
                         }
                     }
-                    uploaded++;
-                    uploadBtn.textContent = `Uploading... ${uploaded}/${csvData.length}`;
+                    
+                    await batch.commit();
+                    uploaded += chunk.length;
+                    
+                    const percent = Math.round((uploaded / csvData.length) * 100);
+                    progressBar.style.width = percent + '%';
+                    progressBar.textContent = percent + '%';
                 }
                 
-                csvSuccess.textContent = `✓ Successfully uploaded ${csvData.length} days of sales data!`;
+                csvSuccess.textContent = `✓ Successfully uploaded ${csvData.length.toLocaleString()} records!`;
                 csvSuccess.classList.add('show');
-                uploadBtn.textContent = '📤 Upload Sales Data';
-                uploadBtn.disabled = false;
+                uploadBtn.textContent = '✓ Upload Complete';
                 
-                setTimeout(() => csvSuccess.classList.remove('show'), 5000);
+                setTimeout(() => {
+                    progress.style.display = 'none';
+                    csvSuccess.classList.remove('show');
+                    uploadBtn.disabled = false;
+                    uploadBtn.textContent = '📤 Upload All Sales Data';
+                }, 5000);
             } catch (error) {
                 csvError.textContent = `Error: ${error.message}`;
                 csvError.classList.add('show');
-                uploadBtn.textContent = '📤 Upload Sales Data';
+                progress.style.display = 'none';
+                uploadBtn.textContent = '📤 Upload All Sales Data';
                 uploadBtn.disabled = false;
             }
         }
         
-        // Save Manual Entry
-        async function saveManualEntry() {
-            const manualSuccess = document.getElementById('manualSuccess');
-            const manualError = document.getElementById('manualError');
-            manualSuccess.classList.remove('show');
-            manualError.classList.remove('show');
-            
-            const date = document.getElementById('manualDate').value;
-            if (!date) {
-                manualError.textContent = 'Please select a date';
-                manualError.classList.add('show');
-                return;
-            }
+        async function applyBulkSettings() {
+            const bulkSuccess = document.getElementById('bulkSuccess');
+            const bulkError = document.getElementById('bulkError');
+            bulkSuccess.classList.remove('show');
+            bulkError.classList.remove('show');
             
             try {
-                const salesData = {
-                    'Richmond': parseFloat(document.getElementById('richmond_sales').value) || 0,
-                    'Palomar': parseFloat(document.getElementById('palomar_sales').value) || 0,
-                    'Georgetown': parseFloat(document.getElementById('georgetown_sales').value) || 0,
-                    'Danville': parseFloat(document.getElementById('danville_sales').value) || 0
-                };
+                const budget = parseFloat(document.getElementById('default_budget').value);
+                const closingHour = parseInt(document.getElementById('default_closing').value);
                 
-                for (const [store, sales] of Object.entries(salesData)) {
-                    const existing = await db.collection('last_year_sales')
-                        .where('store', '==', store)
-                        .where('date', '==', date)
+                for (const storeCode of allStores) {
+                    // Set labor budget
+                    const budgetQuery = await db.collection('labor_budgets')
+                        .where('store_code', '==', storeCode)
                         .get();
                     
-                    if (existing.empty) {
-                        await db.collection('last_year_sales').add({
-                            store: store,
-                            date: date,
-                            sales: sales
+                    if (budgetQuery.empty) {
+                        await db.collection('labor_budgets').add({
+                            store_code: storeCode,
+                            budget_percentage: budget
                         });
                     } else {
-                        const docId = existing.docs[0].id;
-                        await db.collection('last_year_sales').doc(docId).update({
-                            sales: sales
+                        await db.collection('labor_budgets').doc(budgetQuery.docs[0].id).update({
+                            budget_percentage: budget
+                        });
+                    }
+                    
+                    // Set closing hour
+                    const settingsQuery = await db.collection('store_settings')
+                        .where('store_code', '==', storeCode)
+                        .get();
+                    
+                    if (settingsQuery.empty) {
+                        await db.collection('store_settings').add({
+                            store_code: storeCode,
+                            closing_hour: closingHour
+                        });
+                    } else {
+                        await db.collection('store_settings').doc(settingsQuery.docs[0].id).update({
+                            closing_hour: closingHour
                         });
                     }
                 }
                 
-                manualSuccess.classList.add('show');
-                setTimeout(() => manualSuccess.classList.remove('show'), 3000);
-                
-                // Clear form
-                document.getElementById('richmond_sales').value = '';
-                document.getElementById('palomar_sales').value = '';
-                document.getElementById('georgetown_sales').value = '';
-                document.getElementById('danville_sales').value = '';
+                bulkSuccess.classList.add('show');
+                setTimeout(() => bulkSuccess.classList.remove('show'), 3000);
             } catch (error) {
-                manualError.textContent = `Error: ${error.message}`;
-                manualError.classList.add('show');
+                bulkError.textContent = `Error: ${error.message}`;
+                bulkError.classList.add('show');
             }
         }
     </script>
